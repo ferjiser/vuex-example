@@ -3,6 +3,7 @@
 
     <app-header></app-header>
 
+    <div>Mi cuenta es {{counter}}</div>
     <div class="pokemon-list">
       <pokemon-card
         v-for="(pokemon, index) in pokemonsList"
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex';
 import AppHeader from './components/AppHeader';
 import PokemonCard from './components/PokemonCard.vue';
 
@@ -25,18 +27,14 @@ export default {
   name: 'app',
   data () {
     return {
-      pokemonsList: [
-        {"type":"FIRE","name":"charmy","life":100,"attack":10,"dying":false},
-        {"type":"PLANT","name":"planty","life":54,"attack":8,"dying":false},
-        {"type":"WATER","name":"tortly","life":90,"attack":12,"dying":false}
-      ],
     };
   },
+  computed: {
+    ...mapState(['pokemonsList', 'counter'])
+  },
   methods: {
+    ...mapActions(['attackPokemon']),
     resetPokemons() {
-
-    },
-    attackPokemon() {
 
     },
     removePokemon() {

@@ -1,6 +1,6 @@
 <template>
 <div class="pokemon-card" :class="{removing: pokemon.dying}">
-    <span class="delete" @click="deleteClick" v-if="!pokemon.dying">×</span>
+    <span class="delete" @click="deletePokemon(pokemon.name)" v-if="!pokemon.dying">×</span>
     <pokemon-icon :type="pokemon.type" :dying="pokemon.dying"></pokemon-icon>
     <div>name: {{ pokemon.name }}</div>
     <div>life: {{ pokemon.life }}</div>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 import PokemonIcon from './PokemonIcon.vue';
 
 export default {
@@ -21,14 +22,12 @@ export default {
         return {};
     },
     methods: {
+        ...mapActions(['deletePokemon']),
         leftClick() {
             this.$emit('attackLeft');
         },
         rightClick() {
             this.$emit('attackRight');
-        },
-        deleteClick() {
-            this.$emit('delete');
         }
     },
     components: {

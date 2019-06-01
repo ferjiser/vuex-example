@@ -20,11 +20,13 @@
     </div>
 
     <button class="reset-button" @click="resetPokemons">RESET</button>
+    <button class="reset-button" @click="incrementCounter">INCREMENT</button>
 
 </div>
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex';
 import { POKEMON_TYPE } from '@/store/constants';
 
 export default {
@@ -38,21 +40,30 @@ export default {
                     {value: POKEMON_TYPE.WATER, label: 'Water'},
                 ],
                 name: '',
-            },
-            rankings: [
-                {type: POKEMON_TYPE.PLANT, value: 10},
-                {type: POKEMON_TYPE.FIRE, value: 20},
-                {type: POKEMON_TYPE.WATER, value: 0},
-            ]
+            }
         };
     },
+    computed: {
+        ...mapState({
+            rankings: state => {
+                const lifes = {};
+                state.pokemonsList.forEach(pokemon => {
+                    if(!lifes[pokemon.type]) lifes[pokemon.type] = 0;
+                    lifes[pokemon.type] += pokemon.life 
+                });
+                return [
+                    {type: POKEMON_TYPE.PLANT, value: lifes[POKEMON_TYPE.PLANT] || 0},
+                    {type: POKEMON_TYPE.FIRE, value: lifes[POKEMON_TYPE.FIRE] || 0},
+                    {type: POKEMON_TYPE.WATER, value: lifes[POKEMON_TYPE.WATER] || 0}
+                ].sort((a,b)=> b.value-a.value);
+            }
+        })
+    },
     methods: {
+        ...mapActions(['incrementCounter', 'addPokemon']),
         resetPokemons() {
 
-        },
-        addPokemon() {
-
-        },
+        }
     },
 }
 </script>
